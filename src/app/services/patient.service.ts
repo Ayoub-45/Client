@@ -59,6 +59,7 @@ export class PatientService {
       statutMatrimonial,
       date_Naissance,
     };
+    console.log(patient);
     return this.http.post<Patient>(this.url, patient, httpOptions);
   }
 }
