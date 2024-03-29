@@ -2,13 +2,6 @@ import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { Patient } from '../patient';
-import { Observable } from 'rxjs';
-
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-  }),
-};
 @Injectable({
   providedIn: 'root',
 })
@@ -22,7 +15,7 @@ export class PatientService {
     const data = await fetch(this.url);
     return (await data.json()) ?? {};
   }
-  async getPatientById(id: number): Promise<Patient | undefined> {
+  async getPatientById(id: number): Promise<Patient | string> {
     console.log(id);
     const data = await fetch(`${this.url}/${id}`);
     return (await data.json()) ?? {};
@@ -111,8 +104,34 @@ export class PatientService {
       return error instanceof Error ? error.message : 'Unknown error occurred';
     }
   }
-  deletePatient(patientId: number): Promise<void> {
-    const deleteUrl = `${this.url}/${patientId}`;
-    return this.http.delete<void>(deleteUrl).toPromise();
+  async deletePatient(patientId: number): Promise<Patient | string> {
+    try {
+      const response = await fetch(`${this.url}/${patientId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        console.error(
+          'Network response was not ok. Status code:',
+          response.status
+        );
+        const responseBody = await response.text(); // or response.json() if the response is JSON
+        console.error(
+          'Network response was not ok. Response body:',
+          responseBody
+        );
+        throw new Error('Network response was not ok');
+      }
+
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error occurred';
+      return errorMessage;
+    }
   }
 }

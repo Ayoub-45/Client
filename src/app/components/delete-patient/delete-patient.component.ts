@@ -1,37 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component } from '@angular/core';
 import { PatientService } from '../../services/patient.service';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
+  standalone: true,
   selector: 'app-delete-patient',
   templateUrl: './delete-patient.component.html',
   styleUrls: ['./delete-patient.component.css'],
+  imports: [ReactiveFormsModule],
 })
-export class DeletePatientComponent implements OnInit {
+export class DeletePatientComponent {
   patientId!: number;
+  applyForm = new FormGroup({
+    id: new FormControl(0),
+  });
+  constructor(private patientService: PatientService) {}
 
-  constructor(
-    private route: ActivatedRoute,
-    private patientService: PatientService
-  ) {}
-
-  ngOnInit(): void {
-    // Retrieve the patient ID from the route parameters
-    this.route.paramMap.subscribe((params) => {
-      this.patientId = Number(params.get('id'));
-    });
-  }
-
-  deletePatient() {
-    this.patientService
-      .deletePatient(this.patientId)
-      .then(() => {
-        console.log('Patient deleted successfully');
-        // Optionally, navigate to a different page or show a success message
-      })
-      .catch((error) => {
-        console.error('Error deleting patient:', error);
-        // Handle error, e.g., display error message to the user
-      });
+  async submitApplication() {
+    const response = await this.patientService.deletePatient(
+      this.applyForm.value.id ?? 0
+    );
+    if (response) {
+      console.log(response);
+      alert('Patient deleted successfully');
+    }
   }
 }
