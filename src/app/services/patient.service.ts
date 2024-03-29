@@ -27,7 +27,7 @@ export class PatientService {
     const data = await fetch(`${this.url}/${id}`);
     return (await data.json()) ?? {};
   }
-  addPatient(
+  async addPatient(
     id: number,
     code: string,
     nom: string,
@@ -42,8 +42,8 @@ export class PatientService {
     taille: number,
     statutMatrimonial: string,
     date_Naissance: string
-  ): Observable<Patient> {
-    const patient: Patient = {
+  ): Promise<Patient | string> {
+    const patient = {
       id,
       code,
       nom,
@@ -59,7 +59,33 @@ export class PatientService {
       statutMatrimonial,
       date_Naissance,
     };
-    console.log(patient);
-    return this.http.post<Patient>(this.url, patient, httpOptions);
+
+    try {
+      const response = await fetch(this.url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(patient),
+      });
+
+      if (!response.ok) {
+        console.error(
+          'Network response was not ok. Status code:',
+          response.status
+        );
+        const responseBody = await response.text(); // or response.json() if the response is JSON
+        console.error(
+          'Network response was not ok. Response body:',
+          responseBody
+        );
+        throw new Error('Network response was not ok');
+      }
+
+      const responseData = await response.json();
+      return responseData as Patient;
+    } catch (error) {
+      return error instanceof Error ? error.message : 'Unknown error occurred';
+    }
   }
 }

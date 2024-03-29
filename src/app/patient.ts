@@ -12,5 +12,5 @@ export interface Patient {
   poids: number;
   taille: number;
   statutMatrimonial: string;
-  date_Naissance: string;
+  date_Naissance: Date;
 }

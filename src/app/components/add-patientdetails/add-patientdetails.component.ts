@@ -29,25 +29,26 @@ export class AddPatientdetailsComponent {
     date_Naissance: new FormControl(''),
   });
   constructor(public service: PatientService) {}
-  submitApplication(): void {
-    this.service
-      .addPatient(
-        this.applyForm.value.id ?? 0,
-        this.applyForm.value.code ?? '',
-        this.applyForm.value.nom ?? '',
-        this.applyForm.value.prenom ?? '',
-        this.applyForm.value.sexe ?? '',
-        this.applyForm.value.adresse ?? '',
-        this.applyForm.value.profession ?? '',
-        this.applyForm.value.gs ?? '',
-        this.applyForm.value.rh ?? 0,
-        this.applyForm.value.race ?? '',
-        this.applyForm.value.poids ?? 0,
-        this.applyForm.value.taille ?? 0,
-        this.applyForm.value.statutMatrimonial ?? '',
-        this.applyForm.value.date_Naissance ??
-          `${new Date().getMonth()}/${new Date().getMonth()}/${new Date().getFullYear()}/`
-      )
-      .subscribe((patient) => patient);
+  async submitApplication() {
+    const response = await this.service.addPatient(
+      this.applyForm.value.id ?? 0,
+      this.applyForm.value.code ?? '',
+      this.applyForm.value.nom ?? '',
+      this.applyForm.value.prenom ?? '',
+      this.applyForm.value.sexe ?? '',
+      this.applyForm.value.adresse ?? '',
+      this.applyForm.value.profession ?? '',
+      this.applyForm.value.gs ?? '',
+      this.applyForm.value.rh ?? 0,
+      this.applyForm.value.race ?? '',
+      this.applyForm.value.poids ?? 0,
+      this.applyForm.value.taille ?? 0,
+      this.applyForm.value.statutMatrimonial ?? '',
+      this.applyForm.value.date_Naissance ??
+        `${new Date().getMonth()}/${new Date().getMonth()}/${new Date().getFullYear()}/`
+    );
+    if (response) {
+      alert('Patient added successfully');
+    }
   }
 }
