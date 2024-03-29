@@ -88,4 +88,31 @@ export class PatientService {
       return error instanceof Error ? error.message : 'Unknown error occurred';
     }
   }
+  async updatePatient(
+    id: number,
+    updatedPatientData: Partial<Patient>
+  ): Promise<Patient | string> {
+    try {
+      const response = await fetch(`${this.url}/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedPatientData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const responseData = await response.json();
+      return responseData as Patient;
+    } catch (error) {
+      return error instanceof Error ? error.message : 'Unknown error occurred';
+    }
+  }
+  deletePatient(patientId: number): Promise<void> {
+    const deleteUrl = `${this.url}/${patientId}`;
+    return this.http.delete<void>(deleteUrl).toPromise();
+  }
 }

@@ -1,6 +1,5 @@
 import { Component, input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { NgModule } from '@angular/core';
 import { PatientService } from '../../services/patient.service';
 import { Patient } from '../../patient';
 @Component({
@@ -28,7 +27,7 @@ export class AddPatientdetailsComponent {
     profession: new FormControl(''),
     date_Naissance: new FormControl(''),
   });
-  constructor(public service: PatientService) {}
+  constructor(private service: PatientService) {}
   async submitApplication() {
     const response = await this.service.addPatient(
       this.applyForm.value.id ?? 0,

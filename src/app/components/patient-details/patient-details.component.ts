@@ -4,6 +4,7 @@ import { Patient } from '../../patient';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { AddPatientdetailsComponent } from '../add-patientdetails/add-patientdetails.component';
+import { UpdatePatientComponent } from '../update-patient/update-patient.component';
 
 @Component({
   selector: 'app-patient-details',
@@ -14,6 +15,7 @@ import { AddPatientdetailsComponent } from '../add-patientdetails/add-patientdet
     AddPatientdetailsComponent,
     DatePipe,
     ReactiveFormsModule,
+    UpdatePatientComponent,
   ],
   templateUrl: './patient-details.component.html',
   styleUrl: './patient-details.component.css',

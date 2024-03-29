@@ -34,6 +34,7 @@
 </table>
 <br />
 <form [formGroup]="applyForm" (submit)="submitApplication()">
+  <h3>Get patient by Id (Get by id)</h3>
   <label for="patient-id"> Id </label>
   <input
     placeholder="Search by id"
@@ -83,3 +84,5 @@
 
 <h2>Add patient (post)</h2>
 <app-add-patientdetails> </app-add-patientdetails>
+<h2>Update patient details</h2>
+<app-update-patient></app-update-patient>
